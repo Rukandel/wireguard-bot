@@ -36,7 +36,7 @@ echo "- Poetry"
 echo "- Telegram Bot"
 echo $Red | sed 's/\$//g'
 echo "............................................................"
-echo "...................made by PheeZz..........................."
+echo "...................made by Rukandel..........................."
 echo "............................................................"
 
 echo $White | sed 's/\$//g'
@@ -53,11 +53,11 @@ read bot_token
 #ask user for payment card
 echo "$White" | sed 's/\$//g'
 echo "Enter payment card number:"
-echo "Just press ENTER for use default card [$Blue 4242424242424242 $White]" | sed 's/\$//g'
+echo "Just press ENTER for use default card [$Blue 000000000000 $White]" | sed 's/\$//g'
 read payment_card
 if [ -z "$payment_card" ]
 then
-      payment_card="4242424242424242"
+      payment_card="000000000000"
 fi
 
 #ask user for admins ids
@@ -93,31 +93,31 @@ fi
 
 echo ""
 echo "Enter Database user password:"
-echo "Just press ENTER for use default password [$Blue bestpassword123 $White]" | sed 's/\$//g'
+echo "Just press ENTER for use default password [$Blue passwd12 $White]" | sed 's/\$//g'
 read database_passwd
 if [ -z "$database_passwd" ]
 then
-      database_passwd="bestpassword123"
+      database_passwd="passwd12"
 fi
 
 echo ""
 echo "Enter config name prefix:"
-echo "Just press ENTER for use default prefix [$Blue WG_VPN_BOT_BY_PHEEZZ $White]" | sed 's/\$//g'
+echo "Just press ENTER for use default prefix [$Blue skylineVPN $White]" | sed 's/\$//g'
 read config_prefix
 
 if [ -z "$config_prefix" ]
 then
-      config_prefix="WG_VPN_BOT_BY_PHEEZZ"
+      config_prefix="skylineVPN"
 fi
 
 echo ""
 echo "Enter base subscription monthly price in rubles:"
-echo "Just press ENTER for use default price [$Blue 100 $White]" | sed 's/\$//g'
+echo "Just press ENTER for use default price [$Blue 149 $White]" | sed 's/\$//g'
 read base_subscription_monthly_price_rubles
 
 if [ -z "$base_subscription_monthly_price_rubles" ]
 then
-      base_subscription_monthly_price_rubles="100"
+      base_subscription_monthly_price_rubles="149"
 fi
 
 echo ""
@@ -164,7 +164,7 @@ sleep 5
 
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y git bat
-git clone https://github.com/PheeZz/wireguard-bot.git
+git clone https://github.com/Rukandel/wireguard-bot.git
 
 #install zsh, curl
 sudo apt install -y curl
