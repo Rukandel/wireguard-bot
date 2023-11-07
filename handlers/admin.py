@@ -107,7 +107,7 @@ def filter_users_by_status(users: list, status: str) -> list:
 async def give_subscription_time(
     message: types.Message, state: FSMContext
 ) -> types.Message:
-    # /give pheezz 30
+    # /give vip095 30
     # or /give 123456789 30
     if len(message.text.split()) != 3:
         message.answer(
