@@ -30,7 +30,7 @@ async def cmd_start(message: types.Message) -> types.Message:
     if database.selector.is_exist_user(message.from_user.id):
         if database.selector.is_subscription_end(message.from_user.id):
             await message.answer(
-                f"Привет, {message.from_user.full_name or message.from_user.username}, твоя подписка закончилась, продли её, чтобы продолжить пользоваться VPN",
+                f"Привет, {message.from_user.full_name or message.from_user.username}, твоя подписка закончилась, оплати её, чтобы продолжить пользоваться VPN",
                 reply_markup=await kb.free_user_kb(message.from_user.id),
             )
         else:
@@ -46,9 +46,9 @@ async def cmd_start(message: types.Message) -> types.Message:
     )
     await bot.send_message(
         message.from_user.id,
-        "Подробное описание бота, его функционала доступно и пользовательское соглашение доступны в нашем  "
+        "Подробное описание бота и его функционала доступно в нашем телеграмм "
         f"{hlink('канале','https://t.me/vpn_skyline')}, "
-        "оплачивая подписку, вы соглашаетесь с правилами использования бота.",
+        "оплачивая подписку, вы соглашаетесь с правилами использования бота и условиями возврата средств, указанными в статье выше.",
         parse_mode=types.ParseMode.HTML,
     )
     database.insert_new_user(message)
@@ -70,9 +70,8 @@ async def cmd_pay(message: types.Message, state: FSMContext) -> types.Message:
     await NewPayment.payment_image.set()
     await bot.send_message(
         message.from_user.id,
-        "В данный момент бот на бета-тестировании."
-        f"Для продления подписки умножьте {configuration.base_subscription_monthly_price_rubles} на {hcode(configuration.payment_card)} "
-        "и отправьте скриншот с ответом в ответ на это сообщение.",
+        "В данный момент бот в бета-тесте."
+        " отправьте ЛЮБОЙ скриншот в ответ на это сообщение.",
         parse_mode=types.ParseMode.HTML,
         reply_markup=await kb.cancel_payment_kb(),
     )
@@ -82,11 +81,11 @@ async def cmd_pay(message: types.Message, state: FSMContext) -> types.Message:
 async def got_payment_screenshot(message: types.Message, state: FSMContext):
     if message.content_type != "photo":
         await message.reply(
-            "Пожалуйста, отправьте скриншот в ответ на это сообщение."
+            "Пожалуйста, отправьте скриншот чека/операции в ответ на это сообщение."
         )
         return
 
-    await message.reply("Подождите, пока админы продлят Вашу подписку.")
+    await message.reply("Подождите, пока мы проверим вашу оплату.")
     await state.finish()
     # forwards screenshot to admin
     for admin in configuration.admins:
@@ -96,7 +95,7 @@ async def got_payment_screenshot(message: types.Message, state: FSMContext):
             admin,
             f"Пользователь {message.from_user.full_name}\n"
             f"id: {hcode(message.from_user.id)}, username: {hcode(message.from_user.username)} оплатил подписку на VPN.\n\n"
-            "Проверьте решение и активируйте VPN для пользователя.\n"
+            "Проверьте оплату и активируйте VPN для пользователя.\n"
             f"{hcode(give_help_command)}",
             parse_mode=types.ParseMode.HTML,
         )
@@ -261,7 +260,7 @@ async def cmd_show_config(message: types.Message, state=FSMContext):
 
 @rate_limit(limit=5)
 async def cmd_support(message: types.Message):
-    # send telegraph page with support info (link: https://telegra.ph/FAQ-po-botu-01-08)
+
     await message.answer(
         f"Подробное описание бота и его функционала доступно в нашем {hlink('канале','https://t.me/vpn_skyline')}",
         parse_mode=types.ParseMode.HTML,
@@ -270,7 +269,7 @@ async def cmd_support(message: types.Message):
     admin_username = selector.get_username_by_id(configuration.admins[0])
     admin_telegram_link = f"t.me/{admin_username}"
     await message.answer(
-        f"Если у тебя все еще остались вопросы, то ты можешь написать в {hlink('поддержку',admin_telegram_link)} ",
+        f"Если у тебя все еще остались вопросы, то ты можешь написать в  {hlink('поддержку',admin_telegram_link)}",
         parse_mode=types.ParseMode.HTML,
     )
 
