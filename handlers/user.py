@@ -266,10 +266,8 @@ async def cmd_support(message: types.Message):
         parse_mode=types.ParseMode.HTML,
     )
 
-    admin_username = selector.get_username_by_id(configuration.admins[0])
-    admin_telegram_link = f"t.me/{admin_username}"
     await message.answer(
-        f"Если у тебя все еще остались вопросы, то ты можешь написать в  {hlink('поддержку',admin_telegram_link)}",
+        f"Если у тебя все еще остались вопросы, то ты можешь написать в  {hlink('поддержку','https://t.me/skyline_vpn_support')}",
         parse_mode=types.ParseMode.HTML,
     )
 
