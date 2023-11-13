@@ -120,7 +120,7 @@ async def cmd_pay(message: types.Message, state: FSMContext) -> types.Message:
 
     await bot.send_message(
         message.from_user.id,
-        "На данный момент бот находится в этапе бета-тестирования, для продления подписки пришлите любой скриншот.",
+        "На данный момент бот находится в этапе бета-тестирования, для продления подписки пришлите любой скриншот. Присылая скриншот вы соглашаетесь с пользовательским соглашением",
         parse_mode=types.ParseMode.HTML,
         reply_markup=await kb.cancel_payment_kb(),
     )
