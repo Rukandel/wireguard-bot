@@ -46,9 +46,9 @@ async def cmd_start(message: types.Message) -> types.Message:
     )
     await bot.send_message(
         message.from_user.id,
-        "Подробное описание бота и его функционала доступно в нашем  "
+        "Подробное описание бота, его функционала доступно и пользовательское соглашение доступны в нашем  "
         f"{hlink('канале','https://t.me/vpn_skyline')}, "
-        "оплачивая подписку, вы соглашаетесь с правилами использования бота и условиями возврата средств, указанными в статье выше.",
+        "оплачивая подписку, вы соглашаетесь с правилами использования бота.",
         parse_mode=types.ParseMode.HTML,
     )
     database.insert_new_user(message)
@@ -71,7 +71,7 @@ async def cmd_pay(message: types.Message, state: FSMContext) -> types.Message:
     await bot.send_message(
         message.from_user.id,
         "В данный момент бот на бета-тестировании."
-        f"Для продления подписки умножьте {configuration.base_subscription_monthly_price_rubles}₽ на {hcode(configuration.payment_card)} "
+        f"Для продления подписки умножьте {configuration.base_subscription_monthly_price_rubles} на {hcode(configuration.payment_card)} "
         "и отправьте скриншот с ответом в ответ на это сообщение.",
         parse_mode=types.ParseMode.HTML,
         reply_markup=await kb.cancel_payment_kb(),
