@@ -17,15 +17,6 @@ from database import selector
 from utils.fsm import NewConfig, NewPayment
 from utils.qr_code import create_qr_code_from_peer_data
 
-from aiogram import Router
-from aiogram.types import Message, InlineKeyboardButton, CallbackQuery
-from aiogram.utils.keyboard import InlineKeyboardBuilder
-
-
-
-router = Router()
-
-
 
 @rate_limit(limit=5)
 async def cmd_start(message: types.Message) -> types.Message:
@@ -50,7 +41,7 @@ async def cmd_start(message: types.Message) -> types.Message:
         return
 
     await message.reply(
-        f"""
+      f"""
 👋🏽 Добро пожаловать
 
                         <b>🌐             SkylineVPN            🌐</b>
@@ -71,13 +62,13 @@ async def cmd_start(message: types.Message) -> types.Message:
 
 <b>📝 Не пишем логи 🗑</b>
     """,
+        InlineKeyboardButton(text="❔ Как пользоваться", callback_data="how_to_use"),
         reply_markup=await kb.free_user_kb(message.from_user.id),
     )
     await bot.send_message(
         message.from_user.id,
-        "Подробное описание бота и его функционала в нашем "
-        f"{hlink('канале','https://t.me/vpn_skyline')}, "
-        "Оплачивая подписку, вы соглашаетесь с правилами использования бота и условиями возврата средств, указанными в статье выше.",
+        "Подробное описание бота и его функционала доступно в нашем "
+        f"{hlink('канале','https://t.me/vpn_skyline')}, ",
         parse_mode=types.ParseMode.HTML,
     )
     database.insert_new_user(message)
@@ -92,7 +83,6 @@ async def cmd_start(message: types.Message) -> types.Message:
             parse_mode=types.ParseMode.HTML,
         )
 
-@router.callback_query(text="how_to_use")
 async def how_to_use(call: CallbackQuery):
     text = f"""
 1️⃣ Скачиваем клиент <a href='https://www.wireguard.com/'>Wireguard</a>:
@@ -105,7 +95,7 @@ async def how_to_use(call: CallbackQuery):
 
 💻 Linux: [<a href='https://www.wireguard.com/install/'>На сайте</a>]
 
-2️⃣ Продлеваем подписку, скачиваем файл для подключения в мои конфиги
+2️⃣ Покупаем подключение, скачиваем файл для подключения в Профиле
 
 3️⃣ Открываем приложение и добавляем скачанный файл
 
@@ -113,23 +103,25 @@ async def how_to_use(call: CallbackQuery):
     keyboard = InlineKeyboardBuilder()
     keyboard.add(InlineKeyboardButton(text="🔙 Назад", callback_data="start"))
     await call.message.edit_text(text, reply_markup=keyboard.as_markup())
+
+
 @rate_limit(limit=5)
 async def cmd_pay(message: types.Message, state: FSMContext) -> types.Message:
     # на данный момент нет возможности подключить платежную систему, поэтому временно отключено
     await NewPayment.payment_image.set()
-
     await bot.send_message(
         message.from_user.id,
-        "На данный момент бот находится в этапе бета-тестирования, для продления подписки пришлите любой скриншот. Присылая скриншот вы соглашаетесь с пользовательским соглашением",
+        "В данный момент бот в бета тесте."
+        "Чтобы продлить подписку отправьте скриншот в ответ на это сообщение "
+        "Отправляя скриншот вы сошлашаетесь с нашим пользовательским соглашением.",
         parse_mode=types.ParseMode.HTML,
         reply_markup=await kb.cancel_payment_kb(),
-    )
-    keyboard = InlineKeyboardBuilder().row(
+        keyboard = InlineKeyboardBuilder().row(
         InlineKeyboardButton(
             text="Пользовательское соглашение", callback_data="user_agreement"
         )
     )
-
+    )
 
 
 @rate_limit(limit=5)
@@ -140,8 +132,7 @@ async def got_payment_screenshot(message: types.Message, state: FSMContext):
         )
         return
 
-
-    await message.reply("Подождите, пока администаторы выдадут подписку.")
+    await message.reply("Подождите, пока администраторы не продлят Вашу подписку.")
     await state.finish()
     # forwards screenshot to admin
     for admin in configuration.admins:
@@ -159,7 +150,7 @@ async def got_payment_screenshot(message: types.Message, state: FSMContext):
 
 async def cancel_payment(query: types.CallbackQuery, state: FSMContext):
     await state.finish()
-    await query.message.edit_text("Подписка отменена.", reply_markup=None)
+    await query.message.edit_text("Оплата отменена.", reply_markup=None)
 
 
 # successful payment
@@ -316,16 +307,16 @@ async def cmd_show_config(message: types.Message, state=FSMContext):
 
 @rate_limit(limit=5)
 async def cmd_support(message: types.Message):
-
+    # send telegraph page with support info (link: https://telegra.ph/FAQ-po-botu-01-08)
     await message.answer(
-        f"Подробное описание бота и его функционала доступно в {hlink('канале','https://t.me/vpn_skyline')}",
+        f"Подробное описание бота и его функционала доступны в нашем {hlink('канале','https://t.me/vpn_skyline')}",
         parse_mode=types.ParseMode.HTML,
     )
 
     admin_username = selector.get_username_by_id(configuration.admins[0])
     admin_telegram_link = f"t.me/{admin_username}"
     await message.answer(
-        f"Если у вас остались вопросы, то вы можете написать в {hlink('поддержку',admin_telegram_link)} ",
+        f"Если у тебя все еще остались вопросы, то ты можешь написать в {hlink('поддержку',admin_telegram_link)}",
         parse_mode=types.ParseMode.HTML,
     )
 
@@ -343,7 +334,7 @@ async def cmd_show_end_time(message: types.Message):
 async def cmd_show_subscription(message: types.Message):
     await message.answer(
         f"{message.from_user.full_name or message.from_user.username}, "
-        "здесь Вы можете распорядиться своей подпиской",
+        "здесь ты можешь распорядиться своей подпиской",
         reply_markup=await kb.subscription_management_kb(),
     )
 
