@@ -17,22 +17,16 @@
 
 </div>
 
-## Contents tree:
+## Описание
 
-1. [Description](#description)
-2. [Stack](#stack)
-3. [Before you start...](#before-you-start)
-4. [Setup guide](#setup)
-
-
-## Подписка
-
-This bot is designed to manage Wireguard VPN server. It can automatically connect and disconnect users, generate QR codes for mobile clients, and also can be used as a payment system for VPN services. Бот сделан в качестве пет проекта, задачей было сделать бота в телеграмме, с помощью которого было бы можно управлять ВПН сервером. 
+ Бот сделан в качестве пет проекта, задачей было сделать чат-бота в телеграмме, с помощью которого было бы можно управлять ВПН сервером
 
 ## Stack
 
 python 3.10, aiogram <br/>
 Database: postgresql<br/>
+VPN: WireGuard<br/>
+
 
 ### Скрипт для установки(необходимо копировать и запустить в терминале сервера)
 ```bash
