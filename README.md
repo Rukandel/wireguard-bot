@@ -43,10 +43,9 @@ VPN: WireGuard<br/>
    <b>WARNING:</b> disconnecting user will not remove his access from database, so you can give him access again later.<br/>
    Пример: `/give 123456789 30` - give user with id 123456789 access to VPN for 30 days.
 2. `/stats` - показывает статистику по серверу.<br/>
-   Aviable options: `/stats active` - show active users.<br/>
-   `/stats inactive` - show inactive users.<br/>
-   `/stats` without options will show all users.<br/>
-   `/wgrestart` - restart wireguard service
+   Все команды: `/stats active` - показывает активных пользователей.<br/>
+   `/stats inactive` - показывает неактивных пользователей.<br/>
+   `/wgrestart` - перезапуск ВПН сервиса
 
 
 ## TODO
